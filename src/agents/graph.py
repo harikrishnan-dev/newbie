@@ -10,9 +10,9 @@ from typing import Optional
 from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
-from langgraph.prebuilt import ToolNode, tools_condition
+from langgraph.prebuilt import ToolNode
 
-from src.agents.nodes import finalize_answer, query_rewriter, retrieval_agent
+from src.agents.nodes import build_retrieval_agent, finalize_answer, query_rewriter, route_after_retrieval_agent
 from src.agents.tools import search_handbook
 from src.dto.agent_io import AgentInput, AgentOutput
 from src.models.retrieval_state import RetrievalState
@@ -23,14 +23,14 @@ def build_graph(checkpointer: Optional[BaseCheckpointSaver] = None) -> CompiledS
         RetrievalState, input_schema=AgentInput, output_schema=AgentOutput
     )
     builder.add_node("query_rewriter", query_rewriter)
-    builder.add_node("retrieval_agent", retrieval_agent)
+    builder.add_node("retrieval_agent", build_retrieval_agent())
     builder.add_node("tools", ToolNode([search_handbook]))
     builder.add_node("finalize_answer", finalize_answer)
 
     builder.add_edge(START, "query_rewriter")
     builder.add_edge("query_rewriter", "retrieval_agent")
     builder.add_conditional_edges(
-        "retrieval_agent", tools_condition, {"tools": "tools", "__end__": "finalize_answer"}
+        "retrieval_agent", route_after_retrieval_agent, {"tools": "tools", "finalize_answer": "finalize_answer"}
     )
     builder.add_edge("tools", "retrieval_agent")
     builder.add_edge("finalize_answer", END)
