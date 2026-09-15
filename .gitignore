@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Environment variables
+.env
+
+# LangGraph dev server cache
+.langgraph_api/
+
+# Cached Postgres schema (local to whoever's database this reflects)
+.cache/

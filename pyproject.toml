@@ -1,0 +1,47 @@
+[project]
+name = "newbie"
+version = "0.1.0"
+description = "Retrieval Agent - agentic RAG chatbot over a company handbook (spun out of lang-graph-learn)"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "click>=8.1.0",
+    "langgraph>=1.2.11",
+    "langgraph-api>=0.13.4",
+    "langgraph-checkpoint-sqlite>=3.1.1",
+    "langgraph-cli>=0.4.31",
+    "langgraph-sdk>=0.4.4",
+    "langchain-anthropic>=0.3.0",
+    "langsmith>=0.12.1",
+    "python-dotenv>=1.2.3",
+    "pydantic>=2.13.5",
+    "pre-commit>=4.6.2",
+    "weaviate-client>=4.16.2",
+    "pyyaml>=6.0.3",
+    "python-frontmatter>=1.3.0",
+    "fastapi>=0.141.1",
+]
+
+[project.scripts]
+newbie = "src.cli.main:cli"
+
+[tool.uv]
+default-groups = ["dev", "frontend"]
+
+[tool.uv.build-backend]
+module-name = "src"
+module-root = ""
+
+[build-system]
+requires = ["uv_build>=0.12.8,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+frontend = [
+    "uvicorn[standard]>=0.30",
+    "streamlit>=1.38",
+    "requests>=2.32",
+]
