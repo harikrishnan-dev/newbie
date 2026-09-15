@@ -8,24 +8,6 @@ A minimal LangGraph project containing the Retrieval Agent, spun out of `lang-gr
 uv sync
 ```
 
-## Structure
-
-```
-src/
-    agents/                  # query_rewriter -> retrieval_agent <-> tools -> finalize_answer
-    backfill/                # downloads/parses/backfills the handbook into Weaviate
-    cli/main.py              # CLI entry point (backfill-gitlab, retrieve-docs)
-    dto/agent_io.py          # graph input/output contracts
-    models/retrieval_state.py  # graph state
-    prompts/retrieval_prompts.py
-    repository/llm_repository.py
-    retriever/retrieve_docs.py
-    store/weaviate.py, anthropic_store.py
-frontend/
-    backend/          # FastAPI API that will front the RAG pipeline
-    streamlit_app/     # Streamlit chat UI (role selection + chat box)
-```
-
 ## Retrieval Agent (RAG over the company handbook)
 
 A Weaviate-backed, agentic RAG chatbot that answers questions about the (fictionalized) company handbook. See [`docs/retrieval_agent.md`](docs/retrieval_agent.md) for the full setup (Weaviate via `docker-compose.yml`, required env vars, backfill/retrieval CLI commands) and an explanation of how it works.
